@@ -16,13 +16,13 @@ const course = {
         {
           id: "1",
           title: "Course Overview",
-          url: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
+          url: "https://www.youtube.com/watch?v=TeeAp5zkYnI&list=PL0Zuz27SZ-6PrE9srvEn8nbhOOyxnWXfp",
           duration: 8,
         },
         {
           id: "2",
           title: "Course Leader/Instructor",
-          url: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
+          url: "https://www.w3schools.com/html/mov_bbb.mp4",
           duration: 12,
         },
         {
@@ -34,10 +34,10 @@ const course = {
         {
           id: "4",
           title: "Embedding PHP in HTML",
-          url: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
+          url: "https://storage.googleapis.com/coverr-main/mp4/Love-Boat.mp4",
           duration: 15,
-        }
-      ]
+        },
+      ],
     },
     {
       week: "Week 5-8",
@@ -57,7 +57,7 @@ const course = {
         {
           id: "7",
           title: "Return Values",
-          url: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
+          url: "https://storage.googleapis.com/coverr-main/mp4/Love-Boat.mp4",
           duration: 15,
         },
         {
@@ -72,7 +72,7 @@ const course = {
           url: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
           duration: 10,
         },
-      ]
+      ],
     },
     {
       week: "Week 8",
@@ -80,7 +80,7 @@ const course = {
         {
           id: "10",
           title: "How to check a constant",
-          url: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
+          url: "https://storage.googleapis.com/coverr-main/mp4/Love-Boat.mp4",
           duration: 11,
         },
         {
@@ -89,8 +89,8 @@ const course = {
           url: "https://www.youtube.com/watch?v=jNgP6d9HraI",
           duration: 13,
         },
-      ]
-    }
+      ],
+    },
   ],
   duration: "3 weeks",
   lessons: 11,
@@ -99,10 +99,7 @@ const course = {
 };
 
 const getFlatVideoList = (course) =>
-  course.videos.reduce(
-    (acc, week) => [...acc, ...week.topics],
-    []
-  );
+  course.videos.reduce((acc, week) => [...acc, ...week.topics], []);
 
 function getInitialWatched() {
   try {
@@ -116,7 +113,9 @@ function getInitialWatched() {
 const CoursePlayer = () => {
   const flatVideoList = getFlatVideoList(course);
   const [selectedId, setSelectedId] = useState(flatVideoList[0].id);
-  const [watched, setWatched] = useState<{ [videoId: string]: boolean }>(getInitialWatched);
+  const [watched, setWatched] = useState<{ [videoId: string]: boolean }>(
+    getInitialWatched
+  );
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -131,7 +130,7 @@ const CoursePlayer = () => {
 
   // Handle video end and auto-play next
   const handleVideoEnd = useCallback(() => {
-    const currentIndex = flatVideoList.findIndex(v => v.id === selectedId);
+    const currentIndex = flatVideoList.findIndex((v) => v.id === selectedId);
     if (currentIndex < flatVideoList.length - 1) {
       setSelectedId(flatVideoList[currentIndex + 1].id);
       setIsPlaying(true);
@@ -183,15 +182,19 @@ const CoursePlayer = () => {
     <div className="py-6">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm mb-8">
-        <a href="#" className="text-[#8E9196] hover:text-[#6b6e72]">Course</a>
+        <a href="#" className="text-[#8E9196] hover:text-[#6b6e72]">
+          Course
+        </a>
         <ChevronRight className="w-4 h-4 text-[#8E9196]" />
         <span className="text-[#1A1F2C] font-medium">Course Details</span>
       </nav>
 
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1 min-w-0">
-          <h1 className="text-2xl font-bold text-[#1A1F2C] mb-6">{course.title}</h1>
-          
+          <h1 className="text-2xl font-bold text-[#1A1F2C] mb-6">
+            {course.title}
+          </h1>
+
           {/* Video Player */}
           <div className="rounded-2xl overflow-hidden mb-4 bg-[#1A1F2C] aspect-video">
             {selectedVideo ? (
@@ -218,7 +221,9 @@ const CoursePlayer = () => {
 
           {/* Course Materials */}
           <div ref={curriculumRef} className="bg-white rounded-2xl p-6 mb-8">
-            <h2 className="text-lg font-bold text-[#1A1F2C] mb-6">Course Materials</h2>
+            <h2 className="text-lg font-bold text-[#1A1F2C] mb-6">
+              Course Materials
+            </h2>
             <CourseMaterials
               duration={course.duration}
               lessons={course.lessons}

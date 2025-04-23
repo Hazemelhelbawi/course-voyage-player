@@ -53,17 +53,33 @@ const ExamDialog = ({ isOpen, onClose, examId }: ExamDialogProps) => {
   const questions: Question[] = [
     {
       id: 1,
-      question: "Among the following status of India, which one has the oldest rock formations in the country?",
+      question:
+        "Among the following status of India, which one has the oldest rock formations in the country?",
       options: ["Assam", "Bahar", "Karnataka", "Uttar Pradesh"],
       correctAnswer: 1,
     },
-    // Add more questions as needed
+    {
+      id: 2,
+      question:
+        "Among the following status of India, which one has the oldest rock formations in the country?",
+      options: ["Assam", "Bahar", "Karnataka", "Uttar Pradesh"],
+      correctAnswer: 1,
+    },
+    {
+      id: 3,
+      question:
+        "Among the following status of India, which one has the oldest rock formations in the country?",
+      options: ["Assam", "Bahar", "Karnataka", "Uttar Pradesh"],
+      correctAnswer: 1,
+    },
   ];
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    return `${String(minutes).padStart(2, "0")}:${String(
+      remainingSeconds
+    ).padStart(2, "0")}`;
   };
 
   return (
@@ -93,9 +109,10 @@ const ExamDialog = ({ isOpen, onClose, examId }: ExamDialogProps) => {
                 key={index}
                 onClick={() => setCurrentQuestion(index)}
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all
-                  ${index === currentQuestion 
-                    ? "bg-white text-[#6366F1]" 
-                    : answers[index] !== undefined
+                  ${
+                    index === currentQuestion
+                      ? "bg-white text-[#6366F1]"
+                      : answers[index] !== undefined
                       ? "bg-white/90 text-[#6366F1]"
                       : "bg-white/20 text-white"
                   }`}
@@ -110,13 +127,13 @@ const ExamDialog = ({ isOpen, onClose, examId }: ExamDialogProps) => {
             <h2 className="text-lg font-medium text-[#1A1F2C] mb-8">
               {currentQuestion + 1}. {questions[currentQuestion].question}
             </h2>
-            
+
             <RadioGroup
               value={answers[currentQuestion]?.toString()}
-              onValueChange={(value) => 
-                setAnswers(prev => ({
+              onValueChange={(value) =>
+                setAnswers((prev) => ({
                   ...prev,
-                  [currentQuestion]: parseInt(value)
+                  [currentQuestion]: parseInt(value),
                 }))
               }
               className="space-y-3"
@@ -125,15 +142,13 @@ const ExamDialog = ({ isOpen, onClose, examId }: ExamDialogProps) => {
                 <label
                   key={index}
                   className={`flex items-center p-4 rounded-xl cursor-pointer transition-all
-                    ${answers[currentQuestion] === index 
-                      ? "bg-[#6366F1] text-white" 
-                      : "bg-[#F8F9FE] hover:bg-[#F1F5F9]"
+                    ${
+                      answers[currentQuestion] === index
+                        ? "bg-[#6366F1] text-white"
+                        : "bg-[#F8F9FE] hover:bg-[#F1F5F9]"
                     }`}
                 >
-                  <RadioGroupItem 
-                    value={index.toString()} 
-                    className="hidden"
-                  />
+                  <RadioGroupItem value={index.toString()} className="hidden" />
                   <span className="text-sm">{option}</span>
                 </label>
               ))}

@@ -1,7 +1,11 @@
-
 import React, { useState, useEffect } from "react";
 import { Book, MessageSquare, HelpCircle, Award } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
@@ -28,7 +32,7 @@ const VideoNavigation = ({ onScrollToSection }: VideoNavigationProps) => {
   }, [question]);
 
   return (
-    <div className="flex items-center justify-center gap-6 py-4 border-b border-[#E5E7EB]">
+    <div className="flex items-center justify-start gap-6 py-4 border-b border-[#E5E7EB]">
       <button
         onClick={() => onScrollToSection("curriculum")}
         className="flex flex-col items-center gap-1 text-[#8E9196] hover:text-[#6366F1] transition-colors"

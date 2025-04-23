@@ -1,24 +1,24 @@
-
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ArrowRight } from "lucide-react";
 
 const initialComments = [
   {
     id: 1,
-    name: "Student Name Goes Here",
-    avatar: "/lovable-uploads/10a30930-4cd5-490e-833f-44fd7b293969.png",
+    name: "Alice Johnson",
+    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
     date: "Oct 8th 2021",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
     id: 2,
-    name: "Student Name Goes Here",
-    avatar: "/lovable-uploads/10a30930-4cd5-490e-833f-44fd7b293969.png",
+    name: "Michael Smith",
+    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
     date: "Oct 8th 2021",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  }
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
 ];
 
 const CommentSection = () => {
@@ -31,10 +31,14 @@ const CommentSection = () => {
 
     const comment = {
       id: comments.length + 1,
-      name: "Current User",
-      avatar: "/lovable-uploads/10a30930-4cd5-490e-833f-44fd7b293969.png",
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      text: newComment.trim()
+      name: "Hazem Elhelbawi",
+      avatar: "../../public/assets/avatar.png",
+      date: new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      text: newComment.trim(),
     };
 
     setComments([...comments, comment]);
@@ -52,14 +56,16 @@ const CommentSection = () => {
               <AvatarFallback>{c.name[0]}</AvatarFallback>
             </Avatar>
             <div>
-              <div className="font-semibold text-[#1A1F2C] text-sm">{c.name}</div>
+              <div className="font-semibold text-[#1A1F2C] text-sm">
+                {c.name}
+              </div>
               <div className="text-xs text-[#8E9196] mb-2">{c.date}</div>
               <div className="text-sm text-[#4B5563]">{c.text}</div>
             </div>
           </div>
         ))}
       </div>
-      
+
       <div className="border-t border-[#E5E7EB] pt-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <Textarea
@@ -68,12 +74,13 @@ const CommentSection = () => {
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />
-          <div className="flex justify-end">
+          <div className="flex justify-start">
             <Button
               type="submit"
-              className="bg-[#6366F1] hover:bg-[#4F46E5] text-white font-semibold"
+              className="bg-[#26b86f] hover:bg-[#26b86f] text-white font-semibold flex items-center gap-2"
             >
-              Submit Comment
+              Submit Review
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </form>
