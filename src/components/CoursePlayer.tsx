@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import ReactPlayer from "react-player";
 import VideoListSidebar from "./VideoListSidebar";
 import CommentSection from "./CommentSection";
+import { ChevronRight } from "lucide-react";
 
 // Dummy data for demo
 const course = {
@@ -153,19 +153,21 @@ function CoursePlayer() {
   const progressPercent = Math.floor((watchedCount / totalCount) * 100);
 
   return (
-    <div className="container mx-auto py-8 px-2 max-w-7xl">
-      <div className="text-sm text-gray-500 flex mb-8 gap-2 items-center">
-        <a href="#" className="hover:underline text-[#8E9196]">Home</a>
-        <span className="mx-1">/</span>
-        <a href="#" className="hover:underline text-[#8E9196]">Courses</a>
-        <span className="mx-1">/</span>
-        <span className="font-semibold text-gray-900">Course Details</span>
-      </div>
-      <div className="flex flex-col lg:flex-row gap-10">
-        {/* LEFT: Course Details, Video, Materials, Comments */}
+    <div className="py-6">
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-sm mb-8">
+        <a href="#" className="text-[#8E9196] hover:text-[#6b6e72]">Course</a>
+        <ChevronRight className="w-4 h-4 text-[#8E9196]" />
+        <span className="text-[#1A1F2C] font-medium">Course Details</span>
+      </nav>
+
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* LEFT: Course Details */}
         <div className="flex-1 min-w-0">
-          <h1 className="text-3xl font-extrabold mb-6">{course.title}</h1>
-          <div className="rounded-lg overflow-hidden mb-5 shadow relative bg-gray-50 aspect-video max-h-[400px] flex items-center justify-center">
+          <h1 className="text-2xl font-bold text-[#1A1F2C] mb-6">{course.title}</h1>
+          
+          {/* Video Player */}
+          <div className="rounded-2xl overflow-hidden mb-8 bg-[#1A1F2C] aspect-video">
             {selectedVideo ? (
               <ReactPlayer
                 url={selectedVideo.url}
@@ -174,57 +176,32 @@ function CoursePlayer() {
                 controls
                 onProgress={handleProgress}
                 onDuration={handleDuration}
-                played={playedSeconds / duration}
-                style={{ background: "#222", objectFit: "cover" }}
+                style={{ backgroundColor: "#1A1F2C" }}
               />
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-gray-400">
+              <div className="flex items-center justify-center h-full text-white">
                 No video selected
               </div>
             )}
           </div>
 
-          {/* Video Selection below player */}
-          <div className="flex gap-4 mb-8 justify-center">
-            {flatVideoList.slice(0, 4).map((v, idx) => (
-              <button
-                key={v.id}
-                onClick={() => setSelectedId(v.id)}
-                className={`rounded-full p-1 border-2 transition-all duration-200
-                   ${selectedId === v.id ? "border-[#9b87f5]" : "border-gray-200"}
-                   ${watched[v.id] ? "ring-2 ring-green-300" : ""}
-                `}
-                title={v.title}
-              >
-                <img
-                  src="/lovable-uploads/10a30930-4cd5-490e-833f-44fd7b293969.png"
-                  alt={v.title}
-                  className="object-cover w-12 h-12 rounded-full"
-                />
-              </button>
-            ))}
-          </div>
-
-          {/* Course Materials */}
-          <div className="bg-white rounded-xl shadow p-6 mb-8">
-            <h2 className="font-bold text-lg mb-4">Course Materials</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              <div>
-                <div className="text-xs text-gray-500">Duration</div>
-                <div className="font-semibold">{course.duration}</div>
-              </div>
-              <div>
-                <div className="text-xs text-gray-500">Lessons</div>
-                <div className="font-semibold">{course.lessons}</div>
-              </div>
-              <div>
-                <div className="text-xs text-gray-500">Enrolled</div>
-                <div className="font-semibold">{course.enrolled} students</div>
-              </div>
-              <div>
-                <div className="text-xs text-gray-500">Language</div>
-                <div className="font-semibold">{course.language}</div>
-              </div>
+          {/* Course Stats */}
+          <div className="bg-white rounded-2xl p-6 mb-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div>
+              <div className="text-sm text-[#8E9196]">Duration</div>
+              <div className="font-semibold text-[#1A1F2C]">{course.duration}</div>
+            </div>
+            <div>
+              <div className="text-sm text-[#8E9196]">Lessons</div>
+              <div className="font-semibold text-[#1A1F2C]">{course.lessons}</div>
+            </div>
+            <div>
+              <div className="text-sm text-[#8E9196]">Enrolled</div>
+              <div className="font-semibold text-[#1A1F2C]">{course.enrolled} students</div>
+            </div>
+            <div>
+              <div className="text-sm text-[#8E9196]">Language</div>
+              <div className="font-semibold text-[#1A1F2C]">{course.language}</div>
             </div>
           </div>
 
@@ -232,8 +209,8 @@ function CoursePlayer() {
           <CommentSection />
         </div>
 
-        {/* RIGHT: Topics Sidebar */}
-        <aside className="w-full lg:w-[340px] shrink-0">
+        {/* RIGHT: Video List */}
+        <aside className="w-full lg:w-[400px] shrink-0">
           <VideoListSidebar
             course={course}
             watched={watched}
@@ -248,4 +225,3 @@ function CoursePlayer() {
 }
 
 export default CoursePlayer;
-
