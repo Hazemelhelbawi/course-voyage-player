@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import ReactPlayer from "react-player";
 import VideoListSidebar from "./VideoListSidebar";
 import CommentSection from "./CommentSection";
+import CourseMaterials from "./CourseMaterials";
 import { ChevronRight } from "lucide-react";
 
 // Dummy data for demo
@@ -111,10 +112,11 @@ function getInitialWatched() {
   }
 }
 
-function CoursePlayer() {
+const CoursePlayer = () => {
   const flatVideoList = getFlatVideoList(course);
   const [selectedId, setSelectedId] = useState(flatVideoList[0].id);
   const [watched, setWatched] = useState<{ [videoId: string]: boolean }>(getInitialWatched);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("watched-videos", JSON.stringify(watched));
@@ -124,7 +126,16 @@ function CoursePlayer() {
 
   // Track progress per video id
   const [playedSeconds, setPlayedSeconds] = useState(0);
-  const [duration, setDuration] = useState(1); // avoid division by zero
+  const [duration, setDuration] = useState(1);
+
+  // Handle video end and auto-play next
+  const handleVideoEnd = useCallback(() => {
+    const currentIndex = flatVideoList.findIndex(v => v.id === selectedId);
+    if (currentIndex < flatVideoList.length - 1) {
+      setSelectedId(flatVideoList[currentIndex + 1].id);
+      setIsPlaying(true);
+    }
+  }, [selectedId, flatVideoList, isPlaying, setSelectedId]);
 
   // Update watched state if 80% completed
   useEffect(() => {
@@ -162,7 +173,6 @@ function CoursePlayer() {
       </nav>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* LEFT: Course Details */}
         <div className="flex-1 min-w-0">
           <h1 className="text-2xl font-bold text-[#1A1F2C] mb-6">{course.title}</h1>
           
@@ -174,8 +184,10 @@ function CoursePlayer() {
                 width="100%"
                 height="100%"
                 controls
+                playing={isPlaying}
                 onProgress={handleProgress}
                 onDuration={handleDuration}
+                onEnded={handleVideoEnd}
                 style={{ backgroundColor: "#1A1F2C" }}
               />
             ) : (
@@ -185,24 +197,15 @@ function CoursePlayer() {
             )}
           </div>
 
-          {/* Course Stats */}
-          <div className="bg-white rounded-2xl p-6 mb-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div>
-              <div className="text-sm text-[#8E9196]">Duration</div>
-              <div className="font-semibold text-[#1A1F2C]">{course.duration}</div>
-            </div>
-            <div>
-              <div className="text-sm text-[#8E9196]">Lessons</div>
-              <div className="font-semibold text-[#1A1F2C]">{course.lessons}</div>
-            </div>
-            <div>
-              <div className="text-sm text-[#8E9196]">Enrolled</div>
-              <div className="font-semibold text-[#1A1F2C]">{course.enrolled} students</div>
-            </div>
-            <div>
-              <div className="text-sm text-[#8E9196]">Language</div>
-              <div className="font-semibold text-[#1A1F2C]">{course.language}</div>
-            </div>
+          {/* Course Materials */}
+          <div className="bg-white rounded-2xl p-6 mb-8">
+            <h2 className="text-lg font-bold text-[#1A1F2C] mb-6">Course Materials</h2>
+            <CourseMaterials
+              duration={course.duration}
+              lessons={course.lessons}
+              enrolled={course.enrolled}
+              language={course.language}
+            />
           </div>
 
           {/* Comments */}
@@ -222,6 +225,6 @@ function CoursePlayer() {
       </div>
     </div>
   );
-}
+};
 
 export default CoursePlayer;
