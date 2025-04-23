@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import ReactPlayer from "react-player";
 import VideoListSidebar from "./VideoListSidebar";
 import CommentSection from "./CommentSection";
 import CourseMaterials from "./CourseMaterials";
 import { ChevronRight } from "lucide-react";
+import VideoNavigation from "./VideoNavigation";
 
 // Dummy data for demo
 const course = {
@@ -163,6 +164,21 @@ const CoursePlayer = () => {
   const totalCount = flatVideoList.length;
   const progressPercent = Math.floor((watchedCount / totalCount) * 100);
 
+  const commentsRef = useRef<HTMLDivElement>(null);
+  const curriculumRef = useRef<HTMLDivElement>(null);
+
+  const scrollToSection = (sectionId: string) => {
+    const refs = {
+      comments: commentsRef,
+      curriculum: curriculumRef,
+    };
+
+    const ref = refs[sectionId as keyof typeof refs];
+    if (ref?.current) {
+      ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <div className="py-6">
       {/* Breadcrumb */}
@@ -177,7 +193,7 @@ const CoursePlayer = () => {
           <h1 className="text-2xl font-bold text-[#1A1F2C] mb-6">{course.title}</h1>
           
           {/* Video Player */}
-          <div className="rounded-2xl overflow-hidden mb-8 bg-[#1A1F2C] aspect-video">
+          <div className="rounded-2xl overflow-hidden mb-4 bg-[#1A1F2C] aspect-video">
             {selectedVideo ? (
               <ReactPlayer
                 url={selectedVideo.url}
@@ -197,8 +213,11 @@ const CoursePlayer = () => {
             )}
           </div>
 
+          {/* Video Navigation */}
+          <VideoNavigation onScrollToSection={scrollToSection} />
+
           {/* Course Materials */}
-          <div className="bg-white rounded-2xl p-6 mb-8">
+          <div ref={curriculumRef} className="bg-white rounded-2xl p-6 mb-8">
             <h2 className="text-lg font-bold text-[#1A1F2C] mb-6">Course Materials</h2>
             <CourseMaterials
               duration={course.duration}
@@ -209,7 +228,9 @@ const CoursePlayer = () => {
           </div>
 
           {/* Comments */}
-          <CommentSection />
+          <div ref={commentsRef}>
+            <CommentSection />
+          </div>
         </div>
 
         {/* RIGHT: Video List */}
