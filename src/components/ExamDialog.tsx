@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { X, Timer } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ArrowLeft, Timer } from "lucide-react";
 
 interface Question {
   id: number;
@@ -51,7 +50,6 @@ const ExamDialog = ({ isOpen, onClose, examId }: ExamDialogProps) => {
     }
   }, [isOpen, timeLeft]);
 
-  // Sample questions (replace with your actual questions)
   const questions: Question[] = [
     {
       id: 1,
@@ -68,86 +66,79 @@ const ExamDialog = ({ isOpen, onClose, examId }: ExamDialogProps) => {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
   };
 
-  const handleAnswer = (questionIndex: number, answerIndex: number) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionIndex]: answerIndex,
-    }));
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[95vw] w-[95vw] h-[90vh]">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            <Timer className="w-5 h-5" />
-            <span>{formatTime(timeLeft)}</span>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="rounded-full"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-        
-        <div className="flex justify-center mb-8">
-          {questions.map((_, index) => (
-            <div
-              key={index}
-              className={`w-8 h-8 rounded-full flex items-center justify-center mx-1 ${
-                index === currentQuestion
-                  ? "bg-[#6366F1] text-white"
-                  : answers[index] !== undefined
-                  ? "bg-[#22C55E] text-white"
-                  : "bg-gray-200"
-              }`}
+      <DialogContent className="max-w-[95vw] w-[95vw] h-[90vh] p-0 bg-gradient-to-br from-[#9b87f5] to-[#6366F1]">
+        <div className="h-full flex flex-col p-6">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="rounded-full bg-white/20 hover:bg-white/30 text-white"
             >
-              {index + 1}
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div className="bg-[#FFD700] text-[#1A1F2C] px-4 py-1.5 rounded-full font-medium flex items-center gap-2">
+              <Timer className="h-4 w-4" />
+              {formatTime(timeLeft)}
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="bg-white rounded-xl p-6 mb-6">
-          <h2 className="text-lg font-semibold mb-6">
-            {questions[currentQuestion].question}
-          </h2>
-          <div className="space-y-4">
-            {questions[currentQuestion].options.map((option, index) => (
-              <div
+          {/* Question Navigation */}
+          <div className="flex justify-center gap-3 mb-8">
+            {questions.map((_, index) => (
+              <button
                 key={index}
-                className={`flex items-center space-x-3 p-4 rounded-lg cursor-pointer border ${
-                  answers[currentQuestion] === index
-                    ? "border-[#6366F1] bg-[#F1F5F9]"
-                    : "border-gray-200 hover:bg-gray-50"
-                }`}
-                onClick={() => handleAnswer(currentQuestion, index)}
+                onClick={() => setCurrentQuestion(index)}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all
+                  ${index === currentQuestion 
+                    ? "bg-white text-[#6366F1]" 
+                    : answers[index] !== undefined
+                      ? "bg-white/90 text-[#6366F1]"
+                      : "bg-white/20 text-white"
+                  }`}
               >
-                <Checkbox
-                  checked={answers[currentQuestion] === index}
-                  onCheckedChange={() => handleAnswer(currentQuestion, index)}
-                />
-                <span className="text-sm">{option}</span>
-              </div>
+                {index + 1}
+              </button>
             ))}
           </div>
-        </div>
 
-        <div className="flex justify-between">
-          <Button
-            onClick={() => setCurrentQuestion((prev) => Math.max(0, prev - 1))}
-            disabled={currentQuestion === 0}
-          >
-            Previous
-          </Button>
-          <Button
-            onClick={() => setCurrentQuestion((prev) => Math.min(questions.length - 1, prev + 1))}
-            disabled={currentQuestion === questions.length - 1}
-          >
-            Next
-          </Button>
+          {/* Question Container */}
+          <div className="bg-white rounded-3xl p-8 flex-1">
+            <h2 className="text-lg font-medium text-[#1A1F2C] mb-8">
+              {currentQuestion + 1}. {questions[currentQuestion].question}
+            </h2>
+            
+            <RadioGroup
+              value={answers[currentQuestion]?.toString()}
+              onValueChange={(value) => 
+                setAnswers(prev => ({
+                  ...prev,
+                  [currentQuestion]: parseInt(value)
+                }))
+              }
+              className="space-y-3"
+            >
+              {questions[currentQuestion].options.map((option, index) => (
+                <label
+                  key={index}
+                  className={`flex items-center p-4 rounded-xl cursor-pointer transition-all
+                    ${answers[currentQuestion] === index 
+                      ? "bg-[#6366F1] text-white" 
+                      : "bg-[#F8F9FE] hover:bg-[#F1F5F9]"
+                    }`}
+                >
+                  <RadioGroupItem 
+                    value={index.toString()} 
+                    className="hidden"
+                  />
+                  <span className="text-sm">{option}</span>
+                </label>
+              ))}
+            </RadioGroup>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
