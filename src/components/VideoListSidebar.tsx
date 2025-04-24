@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Check, CircleDot, Clock, FileText, FilePen } from "lucide-react";
 import PDFViewer from "./PDFViewer";
@@ -46,17 +47,17 @@ const VideoListSidebar = ({
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-[#E5E7EB]">
       <div className="p-6">
-        <h3 className="text-lg font-bold text-[#1A1F2C] mb-2">
-          Course Content
+        <h3 className="text-lg font-bold text-[#1A1F2C] mb-4">
+          Topics for This Course
         </h3>
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-full h-2 bg-[#F1F5F9] rounded-full overflow-hidden">
+        <div className="flex items-center gap-3">
+          <div className="w-full h-1 bg-[#F1F5F9] rounded-full overflow-hidden">
             <div
               className="h-full rounded-full bg-[#22C55E] transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-          <span className="text-xs font-medium text-[#22C55E]">
+          <span className="text-xs font-medium text-[#22C55E] whitespace-nowrap">
             {progressPercent}%
           </span>
         </div>
@@ -70,53 +71,62 @@ const VideoListSidebar = ({
           >
             <div className="px-6 py-4 font-semibold text-sm text-[#1A1F2C] bg-[#F8F8F9]">
               {week.week}
-              <div className="mt-2 space-y-2">
+              <p className="mt-1 text-xs text-[#6B7280] font-normal">
+                Advanced story telling techniques for writers: Personas, Characters & Plots
+              </p>
+            </div>
+            <div className="px-6 py-4">
+              <div className="space-y-4">
                 {weekIndex === 0 && (
                   <>
                     <button
                       onClick={() => handlePDFClick("/pdfs/week-overview.pdf")}
-                      className="flex items-center gap-2 text-sm text-[#6366F1] hover:text-[#4F46E5] transition-colors"
+                      className="flex items-center justify-between w-full text-sm text-[#1A1F2C] hover:text-[#4F46E5] transition-colors"
                     >
-                      <FileText className="w-4 h-4" />
-                      Week Overview PDF
+                      <span className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-[#6B7280]" />
+                        Course Overview
+                      </span>
+                      <CircleDot className="w-4 h-4 text-[#6B7280]" />
                     </button>
                     <button
                       onClick={() => handleExamClick(`week-${weekIndex + 1}`)}
-                      className="flex items-center gap-2 text-sm text-[#6366F1] hover:text-[#4F46E5] transition-colors"
+                      className="flex items-center justify-between w-full text-sm text-[#1A1F2C]"
                     >
-                      <FilePen className="w-4 h-4" />
-                      Week Assessment
+                      <span className="flex items-center gap-2">
+                        <FilePen className="w-4 h-4 text-[#6B7280]" />
+                        Course Exercise
+                      </span>
+                      <span className="flex items-center gap-2 text-xs text-[#4F46E5]">
+                        <span className="text-[#22C55E]">2 QUESTIONS</span>
+                        <span className="text-[#EF4444]">10 MINUTES</span>
+                      </span>
                     </button>
                   </>
                 )}
               </div>
+              <ul className="space-y-4 mt-4">
+                {week.topics.map((t: any) => (
+                  <li
+                    key={t.id}
+                    onClick={() => onSelect(t.id)}
+                    className="flex items-center justify-between cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <CircleDot className="w-4 h-4 text-[#6B7280] group-hover:text-[#4F46E5]" />
+                      <span className="text-sm text-[#1A1F2C] group-hover:text-[#4F46E5]">
+                        {t.title}
+                      </span>
+                    </div>
+                    {t.duration && (
+                      <span className="flex items-center gap-1 text-xs text-[#6B7280]">
+                        <Clock className="w-3 h-3" /> {t.duration} min
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="p-4">
-              {week.topics.map((t: any) => (
-                <li
-                  key={t.id}
-                  onClick={() => onSelect(t.id)}
-                  className={`flex flex-col gap-2 p-3 rounded-xl cursor-pointer transition-colors
-                  ${
-                    selectedId === t.id ? "bg-[#F1F5F9]" : "hover:bg-[#F8F8F9]"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span
-                      className={`font-medium text-sm ${
-                        watched[t.id] ? "text-[#22C55E]" : "text-[#1A1F2C]"
-                      }`}
-                    >
-                      {t.title}
-                    </span>
-                    <span className="flex items-center gap-1 text-xs text-[#8E9196] whitespace-nowrap">
-                      <Clock className="w-3 h-3" /> {t.duration} min
-                    </span>
-                  </div>
-                  <div>{videoStatusMark(watched[t.id])}</div>
-                </li>
-              ))}
-            </ul>
           </div>
         ))}
       </div>
