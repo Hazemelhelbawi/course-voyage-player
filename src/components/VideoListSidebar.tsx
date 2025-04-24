@@ -50,28 +50,37 @@ const VideoListSidebar = ({
         <h3 className="text-lg font-bold text-[#1A1F2C] mb-4">
           Topics for This Course
         </h3>
-        <div className="flex items-center gap-3 relative">
-          <div className="w-full h-2 bg-[#F1F5F9] rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full bg-[#22C55E] transition-all duration-300 ease-in-out"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-          <div 
-            className="absolute"
-            style={{ 
-              left: `${progressPercent}%`, 
-              transform: 'translateX(-50%) translateY(-50%)',
-              top: '50%'
-            }}
-          >
-            <div className="bg-white rounded-full p-0.5 shadow-sm">
-              <div className="w-4 h-4 rounded-full border-2 border-[#22C55E] bg-white" />
+        <div className="flex flex-col gap-2">
+          <div className="relative h-2">
+            <div className="w-full h-full bg-[#F1F0FB] rounded-full">
+              <div
+                className="h-full rounded-full bg-[#F2FCE2] transition-all duration-300 ease-in-out"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+            <div 
+              className="absolute"
+              style={{ 
+                left: `${progressPercent}%`, 
+                transform: 'translateX(-50%)',
+                top: '-24px'
+              }}
+            >
+              <div className="flex flex-col items-center">
+                <div className="bg-white rounded-full p-1 shadow-sm border border-[#E5E7EB]">
+                  <div className="w-6 h-6 rounded-full bg-[#9b87f5] text-white flex items-center justify-center text-xs font-medium">
+                    You
+                  </div>
+                </div>
+                <div className="w-0.5 h-3 bg-[#E5E7EB] mt-1" />
+              </div>
             </div>
           </div>
-          <span className="text-xs font-medium text-[#22C55E] whitespace-nowrap">
-            {progressPercent}%
-          </span>
+          <div className="flex justify-end">
+            <span className="text-sm font-medium text-[#1A1F2C]">
+              {progressPercent}%
+            </span>
+          </div>
         </div>
       </div>
 
