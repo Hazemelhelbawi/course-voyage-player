@@ -50,12 +50,24 @@ const VideoListSidebar = ({
         <h3 className="text-lg font-bold text-[#1A1F2C] mb-4">
           Topics for This Course
         </h3>
-        <div className="flex items-center gap-3">
-          <div className="w-full h-1 bg-[#F1F5F9] rounded-full overflow-hidden">
+        <div className="flex items-center gap-3 relative">
+          <div className="w-full h-2 bg-[#F1F5F9] rounded-full overflow-hidden">
             <div
-              className="h-full rounded-full bg-[#22C55E] transition-all duration-300"
+              className="h-full rounded-full bg-[#22C55E] transition-all duration-300 ease-in-out"
               style={{ width: `${progressPercent}%` }}
             />
+          </div>
+          <div 
+            className="absolute"
+            style={{ 
+              left: `${progressPercent}%`, 
+              transform: 'translateX(-50%) translateY(-50%)',
+              top: '50%'
+            }}
+          >
+            <div className="bg-white rounded-full p-0.5 shadow-sm">
+              <div className="w-4 h-4 rounded-full border-2 border-[#22C55E] bg-white" />
+            </div>
           </div>
           <span className="text-xs font-medium text-[#22C55E] whitespace-nowrap">
             {progressPercent}%

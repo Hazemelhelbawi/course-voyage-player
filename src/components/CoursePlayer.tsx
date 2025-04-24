@@ -130,19 +130,22 @@ const CoursePlayer = () => {
 
   // Handle video end and auto-play next
   const handleVideoEnd = useCallback(() => {
+    // Mark current video as watched
+    setWatched(prev => ({ ...prev, [selectedId]: true }));
+    
     const currentIndex = flatVideoList.findIndex((v) => v.id === selectedId);
     if (currentIndex < flatVideoList.length - 1) {
       setSelectedId(flatVideoList[currentIndex + 1].id);
       setIsPlaying(true);
     }
-  }, [selectedId, flatVideoList, isPlaying, setSelectedId]);
+  }, [selectedId, flatVideoList, setSelectedId, setWatched, isPlaying]);
 
   // Update watched state if 80% completed
   useEffect(() => {
     if (playedSeconds / duration >= 0.8 && !watched[selectedId]) {
       setWatched((prev) => ({ ...prev, [selectedId]: true }));
     }
-  }, [playedSeconds, duration, selectedId, watched]);
+  }, [playedSeconds, duration, selectedId, watched, setWatched]);
 
   // Reset progress when video changes
   useEffect(() => {
@@ -159,9 +162,9 @@ const CoursePlayer = () => {
   };
 
   // Calculate progress
-  const watchedCount = Object.keys(watched).length;
+  const watchedCount = Object.values(watched).filter(Boolean).length;
   const totalCount = flatVideoList.length;
-  const progressPercent = Math.floor((watchedCount / totalCount) * 100);
+  const progressPercent = Math.round((watchedCount / totalCount) * 100);
 
   const commentsRef = useRef<HTMLDivElement>(null);
   const curriculumRef = useRef<HTMLDivElement>(null);
