@@ -54,7 +54,7 @@ const VideoListSidebar = ({
           <div className="relative h-2">
             <div className="w-full h-full bg-[#F1F0FB] rounded-full">
               <div
-                className="h-full rounded-full bg-[#F2FCE2] transition-all duration-300 ease-in-out"
+                className="h-full rounded-full bg-[#E5E0FC] transition-all duration-300 ease-in-out"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -63,23 +63,28 @@ const VideoListSidebar = ({
               style={{ 
                 left: `${progressPercent}%`, 
                 transform: 'translateX(-50%)',
-                top: '-24px'
+                top: '-20px'
               }}
             >
               <div className="flex flex-col items-center">
                 <div className="bg-white rounded-full p-1 shadow-sm border border-[#E5E7EB]">
-                  <div className="w-6 h-6 rounded-full bg-[#9b87f5] text-white flex items-center justify-center text-xs font-medium">
+                  <div className="w-5 h-5 rounded-full bg-[#9B87F5] text-white flex items-center justify-center text-[10px] font-medium">
                     You
                   </div>
                 </div>
-                <div className="w-0.5 h-3 bg-[#E5E7EB] mt-1" />
+                <div className="w-0.5 h-2 bg-[#E5E7EB] mt-1" />
               </div>
             </div>
-          </div>
-          <div className="flex justify-end">
-            <span className="text-sm font-medium text-[#1A1F2C]">
+            <div 
+              className="absolute text-xs font-medium text-[#6B7280]"
+              style={{ 
+                left: `${progressPercent}%`, 
+                transform: 'translateX(-50%)',
+                top: '12px'
+              }}
+            >
               {progressPercent}%
-            </span>
+            </div>
           </div>
         </div>
       </div>
