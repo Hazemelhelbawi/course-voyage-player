@@ -2,6 +2,8 @@
 
 A modern, interactive course video player platform built with React and TypeScript. This platform provides an intuitive interface for students to watch course videos, track their progress, and access course materials.
 
+##demo 
+https://course-voyage-player.vercel.app/
 ## Features
 
 - 📺 **Interactive Video Player**
