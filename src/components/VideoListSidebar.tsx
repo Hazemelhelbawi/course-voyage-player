@@ -131,33 +131,57 @@ const VideoListSidebar = ({
             </div>
             <div className="px-6 pb-4">
               <div className="divide-y divide-[#E5E7EB]">
+                {/* Video List Items */}
+                {week.topics.map((topic) => (
+                  <button
+                    key={topic.id}
+                    onClick={() => onSelect(topic.id)}
+                    className={`flex items-center justify-between w-full text-sm py-4 ${
+                      selectedId === topic.id
+                        ? "text-[#4F46E5] font-medium"
+                        : "text-[#1A1F2C] hover:text-[#4F46E5]"
+                    } transition-colors`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-[#6B7280]" />
+                      {topic.title}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {topic.duration && (
+                        <span className="text-xs text-[#6B7280]">
+                          {topic.duration} min
+                        </span>
+                      )}
+                      {videoStatusMark(watched[topic.id])}
+                    </div>
+                  </button>
+                ))}
+
+                {/* Single PDF button per week */}
                 <button
-                  onClick={() => handlePDFClick("/pdfs/introduction.pdf")}
+                  onClick={() =>
+                    handlePDFClick(
+                      "../../public/assets/dummy.pdf"
+                      // "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+                    )
+                  }
                   className="flex items-center justify-between w-full text-sm text-[#1A1F2C] hover:text-[#4F46E5] transition-colors py-4"
                 >
                   <span className="flex items-center gap-2">
                     <FileText className="w-4 h-4 text-[#6B7280]" />
-                    Introduction
+                    Week Materials
                   </span>
                   <Lock className="w-4 h-4 text-[#6B7280]" />
                 </button>
-                <button
-                  onClick={() => handlePDFClick("/pdfs/course-overview.pdf")}
-                  className="flex items-center justify-between w-full text-sm text-[#1A1F2C] hover:text-[#4F46E5] transition-colors py-4"
-                >
-                  <span className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-[#6B7280]" />
-                    Course Overview
-                  </span>
-                  <Lock className="w-4 h-4 text-[#6B7280]" />
-                </button>
+
+                {/* Exam button */}
                 <button
                   onClick={() => handleExamClick(`week-${weekIndex + 1}`)}
                   className="flex items-center justify-between w-full text-sm text-[#1A1F2C] py-4"
                 >
                   <span className="flex items-center gap-2">
                     <FilePen className="w-4 h-4 text-[#6B7280]" />
-                    Course Overview
+                    Week Quiz
                   </span>
                   <span className="flex items-center gap-2">
                     <span className="text-xs text-[#22C55E] bg-[#F0FDF4] px-2 py-0.5 rounded">
@@ -167,36 +191,6 @@ const VideoListSidebar = ({
                       10 MINUTES
                     </span>
                   </span>
-                </button>
-                <button
-                  onClick={() => handlePDFClick("/pdfs/reference-files.pdf")}
-                  className="flex items-center justify-between w-full text-sm text-[#1A1F2C] hover:text-[#4F46E5] transition-colors py-4"
-                >
-                  <span className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-[#6B7280]" />
-                    Course Exercise / Reference Files
-                  </span>
-                  <Lock className="w-4 h-4 text-[#6B7280]" />
-                </button>
-                <button
-                  onClick={() => handlePDFClick("/pdfs/code-editor.pdf")}
-                  className="flex items-center justify-between w-full text-sm text-[#1A1F2C] hover:text-[#4F46E5] transition-colors py-4"
-                >
-                  <span className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-[#6B7280]" />
-                    Code Editor Installation (Optional if you have one)
-                  </span>
-                  <Lock className="w-4 h-4 text-[#6B7280]" />
-                </button>
-                <button
-                  onClick={() => handlePDFClick("/pdfs/embedding-php.pdf")}
-                  className="flex items-center justify-between w-full text-sm text-[#1A1F2C] hover:text-[#4F46E5] transition-colors py-4"
-                >
-                  <span className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-[#6B7280]" />
-                    Embedding PHP in HTML
-                  </span>
-                  <Lock className="w-4 h-4 text-[#6B7280]" />
                 </button>
               </div>
             </div>
